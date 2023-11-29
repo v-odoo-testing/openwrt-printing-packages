@@ -4,11 +4,11 @@ This is a [package feed] aiming at providing a complete printing stack
 for OpenWrt.
 
 Notably it has:
-- Ghostscript 9.06
-- Gutenprint 5.2.9
-- Cups 1.6.3
+- Ghostscript 10.02.1
+- Gutenprint 5.3.4
+- Cups 2.4.7
 - OpenPrinting's cups-filters 1.0.37
-- poppler 0.24.1
+- poppler 23.11.0
 - many other packages to make sure the ones above work...
 
 [package feed]: http://wiki.openwrt.org/doc/devel/feeds
@@ -28,7 +28,7 @@ Notably it has:
 - add this line to your `feeds.conf` or `feeds.conf.default`
 
 ```
-src-git printing git://github.com/FranciscoBorges/openwrt-printing-packages.git
+src-git printing git://github.com/Vladdrako/openwrt-printing-packages.git
 ```
 
 - to compile everything in this feed you should use the script `setup-buildsystem.sh` or some variation of those commands.
