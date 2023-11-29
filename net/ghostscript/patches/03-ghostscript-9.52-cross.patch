@@ -1,6 +1,63 @@
-diff -Naur ghostscript-9.05.orig/arm-arch.h ghostscript-9.05/arm-arch.h
---- ghostscript-9.05.orig/arm-arch.h	1969-12-31 19:00:00.000000000 -0500
-+++ ghostscript-9.05/arm-arch.h	2012-02-13 13:08:44.000000000 -0500
+diff -Naru ghostscript-9.52_orig/Makefile.in ghostscript-9.52/Makefile.in
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -788,3 +788,5 @@
+ 
+ check : default
+ 	$(NO_OP)
++
++include $(GLSRCDIR)/cross.mak
+diff -Naru ghostscript-9.52_orig/aarch64-arch.h ghostscript-9.52/aarch64-arch.h
+--- a/aarch64-arch.h
++++ b/aarch64-arch.h
+@@ -0,0 +1,44 @@
++/* Parameters derived from machine and compiler architecture. */
++/* This file is generated mechanically by genarch.c. */
++
++	 /* ---------------- Scalar alignments ---------------- */
++
++#define ARCH_ALIGN_SHORT_MOD 2
++#define ARCH_ALIGN_INT_MOD 4
++#define ARCH_ALIGN_LONG_MOD 8
++#define ARCH_ALIGN_SIZE_T_MOD 8
++#define ARCH_ALIGN_PTR_MOD 8
++#define ARCH_ALIGN_FLOAT_MOD 4
++#define ARCH_ALIGN_DOUBLE_MOD 8
++
++	 /* ---------------- Scalar sizes ---------------- */
++
++#define ARCH_LOG2_SIZEOF_CHAR 0
++#define ARCH_LOG2_SIZEOF_SHORT 1
++#define ARCH_LOG2_SIZEOF_INT 2
++#define ARCH_LOG2_SIZEOF_LONG 3
++#define ARCH_LOG2_SIZEOF_SIZE_T 3
++#define ARCH_LOG2_SIZEOF_LONG_LONG 3
++#define ARCH_SIZEOF_SIZE_T 8
++#define ARCH_SIZEOF_GX_COLOR_INDEX 8
++#define ARCH_SIZEOF_PTR 8
++#define ARCH_SIZEOF_FLOAT 4
++#define ARCH_SIZEOF_DOUBLE 8
++#define ARCH_FLOAT_MANTISSA_BITS 24
++#define ARCH_DOUBLE_MANTISSA_BITS 53
++
++	 /* ---------------- Unsigned max values ---------------- */
++
++#define ARCH_MAX_UCHAR ((unsigned char)0xff + (unsigned char)0)
++#define ARCH_MAX_USHORT ((unsigned short)0xffff + (unsigned short)0)
++#define ARCH_MAX_UINT ((unsigned int)~0 + (unsigned int)0)
++#define ARCH_MAX_ULONG ((unsigned long)~0L + (unsigned long)0)
++#define ARCH_MAX_SIZE_T ((size_t)~0L + (size_t)0)
++
++	 /* ---------------- Miscellaneous ---------------- */
++
++#define ARCH_IS_BIG_ENDIAN 0
++#define ARCH_PTRS_ARE_SIGNED 0
++#define ARCH_FLOATS_ARE_IEEE 1
++#define ARCH_ARITH_RSHIFT 2
++#define ARCH_DIV_NEG_POS_TRUNCATES 1
+diff -Naru ghostscript-9.52_orig/arm-arch.h ghostscript-9.52/arm-arch.h
+--- a/arm-arch.h
++++ b/arm-arch.h
 @@ -0,0 +1,41 @@
 +/* Parameters derived from machine and compiler architecture. */
 +/* This file is generated mechanically by genarch.c. */
@@ -43,9 +100,9 @@ diff -Naur ghostscript-9.05.orig/arm-arch.h ghostscript-9.05/arm-arch.h
 +#define ARCH_ARITH_RSHIFT 2
 +#define ARCH_DIV_NEG_POS_TRUNCATES 1
 +
-diff -Naur ghostscript-9.05.orig/armeb-arch.h ghostscript-9.05/armeb-arch.h
---- ghostscript-9.05.orig/armeb-arch.h	1969-12-31 19:00:00.000000000 -0500
-+++ ghostscript-9.05/armeb-arch.h	2012-02-13 13:08:44.000000000 -0500
+diff -Naru ghostscript-9.52_orig/armeb-arch.h ghostscript-9.52/armeb-arch.h
+--- a/armeb-arch.h
++++ b/armeb-arch.h
 @@ -0,0 +1,41 @@
 +/* Parameters derived from machine and compiler architecture. */
 +/* This file is generated mechanically by genarch.c. */
@@ -88,9 +145,9 @@ diff -Naur ghostscript-9.05.orig/armeb-arch.h ghostscript-9.05/armeb-arch.h
 +#define ARCH_ARITH_RSHIFT 2
 +#define ARCH_DIV_NEG_POS_TRUNCATES 1
 +
-diff -Naur ghostscript-9.05.orig/avr32-arch.h ghostscript-9.05/avr32-arch.h
---- ghostscript-9.05.orig/avr32-arch.h	1969-12-31 19:00:00.000000000 -0500
-+++ ghostscript-9.05/avr32-arch.h	2012-02-13 13:08:44.000000000 -0500
+diff -Naru ghostscript-9.52_orig/avr32-arch.h ghostscript-9.52/avr32-arch.h
+--- a/avr32-arch.h
++++ b/avr32-arch.h
 @@ -0,0 +1,41 @@
 +/* Parameters derived from machine and compiler architecture. */
 +/* This file is generated mechanically by genarch.c. */
@@ -133,27 +190,27 @@ diff -Naur ghostscript-9.05.orig/avr32-arch.h ghostscript-9.05/avr32-arch.h
 +#define ARCH_ARITH_RSHIFT 2
 +#define ARCH_DIV_NEG_POS_TRUNCATES 1
 +
-diff -Naur ghostscript-9.05.orig/base/cross.mak ghostscript-9.05/base/cross.mak
---- ghostscript-9.05.orig/base/cross.mak	1969-12-31 19:00:00.000000000 -0500
-+++ ghostscript-9.05/base/cross.mak	2012-02-13 13:08:44.000000000 -0500
+diff -Naru ghostscript-9.52_orig/base/cross.mak ghostscript-9.52/base/cross.mak
+--- a/base/cross.mak
++++ b/base/cross.mak
 @@ -0,0 +1,5 @@
-+
 +cross_prepare:
 +	mkdir -p $(GLGEN)
 +	cp -f $(ARCH)-arch.h $(GLGEN)/arch.h
 +	touch $(GLGEN)/arch.h
-diff -Naur ghostscript-9.05.orig/base/Makefile.in ghostscript-9.05/base/Makefile.in
---- ghostscript-9.05.orig/base/Makefile.in	2012-02-13 13:07:44.000000000 -0500
-+++ ghostscript-9.05/base/Makefile.in	2012-02-13 13:08:44.000000000 -0500
-@@ -636,3 +636,4 @@
++
+diff -Naru ghostscript-9.52_orig/base/unix-gcc.mak ghostscript-9.52/base/unix-gcc.mak
+--- a/base/unix-gcc.mak
++++ b/base/unix-gcc.mak
+@@ -703,3 +703,4 @@
+ 
  check : default
  	$(NO_OP)
- 
-+include $(GLSRCDIR)/cross.mak
-diff -Naur ghostscript-9.05.orig/base/unixhead.mak ghostscript-9.05/base/unixhead.mak
---- ghostscript-9.05.orig/base/unixhead.mak	2012-02-13 13:07:44.000000000 -0500
-+++ ghostscript-9.05/base/unixhead.mak	2012-02-13 13:08:44.000000000 -0500
-@@ -54,7 +54,7 @@
++
+diff -Naru ghostscript-9.52_orig/base/unixhead.mak ghostscript-9.52/base/unixhead.mak
+--- a/base/unixhead.mak
++++ b/base/unixhead.mak
+@@ -53,7 +53,7 @@
  
  # Define generic commands.
  
@@ -162,9 +219,9 @@ diff -Naur ghostscript-9.05.orig/base/unixhead.mak ghostscript-9.05/base/unixhea
  RM_=rm -f
  RMN_=rm -f
  
-diff -Naur ghostscript-9.05.orig/i386-arch.h ghostscript-9.05/i386-arch.h
---- ghostscript-9.05.orig/i386-arch.h	1969-12-31 19:00:00.000000000 -0500
-+++ ghostscript-9.05/i386-arch.h	2012-02-13 13:08:44.000000000 -0500
+diff -Naru ghostscript-9.52_orig/i386-arch.h ghostscript-9.52/i386-arch.h
+--- a/i386-arch.h
++++ b/i386-arch.h
 @@ -0,0 +1,41 @@
 +/* Parameters derived from machine and compiler architecture. */
 +/* This file is generated mechanically by genarch.c. */
@@ -207,9 +264,9 @@ diff -Naur ghostscript-9.05.orig/i386-arch.h ghostscript-9.05/i386-arch.h
 +#define ARCH_ARITH_RSHIFT 2
 +#define ARCH_DIV_NEG_POS_TRUNCATES 1
 +
-diff -Naur ghostscript-9.05.orig/m68k-arch.h ghostscript-9.05/m68k-arch.h
---- ghostscript-9.05.orig/m68k-arch.h	1969-12-31 19:00:00.000000000 -0500
-+++ ghostscript-9.05/m68k-arch.h	2012-02-13 13:08:44.000000000 -0500
+diff -Naru ghostscript-9.52_orig/m68k-arch.h ghostscript-9.52/m68k-arch.h
+--- a/m68k-arch.h
++++ b/m68k-arch.h
 @@ -0,0 +1,41 @@
 +/* Parameters derived from machine and compiler architecture. */
 +/* This file is generated mechanically by genarch.c. */
@@ -252,9 +309,54 @@ diff -Naur ghostscript-9.05.orig/m68k-arch.h ghostscript-9.05/m68k-arch.h
 +#define ARCH_ARITH_RSHIFT 2
 +#define ARCH_DIV_NEG_POS_TRUNCATES 1
 +
-diff -Naur ghostscript-9.05.orig/mips64-arch.h ghostscript-9.05/mips64-arch.h
---- ghostscript-9.05.orig/mips64-arch.h	1969-12-31 19:00:00.000000000 -0500
-+++ ghostscript-9.05/mips64-arch.h	2012-02-13 13:08:44.000000000 -0500
+diff -Naru ghostscript-9.52_orig/mips-arch.h ghostscript-9.52/mips-arch.h
+--- a/mips-arch.h
++++ b/mips-arch.h
+@@ -0,0 +1,41 @@
++/* Parameters derived from machine and compiler architecture. */
++/* This file is generated mechanically by genarch.c. */
++
++   /* ---------------- Scalar alignments ---------------- */
++
++#define ARCH_ALIGN_SHORT_MOD 2
++#define ARCH_ALIGN_INT_MOD 4
++#define ARCH_ALIGN_LONG_MOD 4
++#define ARCH_ALIGN_PTR_MOD 4
++#define ARCH_ALIGN_FLOAT_MOD 4
++#define ARCH_ALIGN_DOUBLE_MOD 8
++
++   /* ---------------- Scalar sizes ---------------- */
++
++#define ARCH_LOG2_SIZEOF_CHAR 0
++#define ARCH_LOG2_SIZEOF_SHORT 1
++#define ARCH_LOG2_SIZEOF_INT 2
++#define ARCH_LOG2_SIZEOF_LONG 2
++#define ARCH_LOG2_SIZEOF_LONG_LONG 3
++#define ARCH_SIZEOF_GX_COLOR_INDEX 8
++#define ARCH_SIZEOF_PTR 4
++#define ARCH_SIZEOF_FLOAT 4
++#define ARCH_SIZEOF_DOUBLE 8
++#define ARCH_FLOAT_MANTISSA_BITS 24
++#define ARCH_DOUBLE_MANTISSA_BITS 53
++
++   /* ---------------- Unsigned max values ---------------- */
++
++#define ARCH_MAX_UCHAR ((unsigned char)0xff + (unsigned char)0)
++#define ARCH_MAX_USHORT ((unsigned short)0xffff + (unsigned short)0)
++#define ARCH_MAX_UINT ((unsigned int)~0 + (unsigned int)0)
++#define ARCH_MAX_ULONG ((unsigned long)~0L + (unsigned long)0)
++
++   /* ---------------- Miscellaneous ---------------- */
++
++#define ARCH_IS_BIG_ENDIAN 1
++#define ARCH_PTRS_ARE_SIGNED 0
++#define ARCH_FLOATS_ARE_IEEE 1
++#define ARCH_ARITH_RSHIFT 2
++#define ARCH_DIV_NEG_POS_TRUNCATES 1
++
+diff -Naru ghostscript-9.52_orig/mips64-arch.h ghostscript-9.52/mips64-arch.h
+--- a/mips64-arch.h
++++ b/mips64-arch.h
 @@ -0,0 +1,41 @@
 +/* Parameters derived from machine and compiler architecture. */
 +/* This file is generated mechanically by genarch.c. */
@@ -297,9 +399,9 @@ diff -Naur ghostscript-9.05.orig/mips64-arch.h ghostscript-9.05/mips64-arch.h
 +#define ARCH_ARITH_RSHIFT 2
 +#define ARCH_DIV_NEG_POS_TRUNCATES 1
 +
-diff -Naur ghostscript-9.05.orig/mips64el-arch.h ghostscript-9.05/mips64el-arch.h
---- ghostscript-9.05.orig/mips64el-arch.h	1969-12-31 19:00:00.000000000 -0500
-+++ ghostscript-9.05/mips64el-arch.h	2012-02-13 13:08:44.000000000 -0500
+diff -Naru ghostscript-9.52_orig/mips64el-arch.h ghostscript-9.52/mips64el-arch.h
+--- a/mips64el-arch.h
++++ b/mips64el-arch.h
 @@ -0,0 +1,41 @@
 +/* Parameters derived from machine and compiler architecture. */
 +/* This file is generated mechanically by genarch.c. */
@@ -342,54 +444,9 @@ diff -Naur ghostscript-9.05.orig/mips64el-arch.h ghostscript-9.05/mips64el-arch.
 +#define ARCH_ARITH_RSHIFT 2
 +#define ARCH_DIV_NEG_POS_TRUNCATES 1
 +
-diff -Naur ghostscript-9.05.orig/mips-arch.h ghostscript-9.05/mips-arch.h
---- ghostscript-9.05.orig/mips-arch.h	1969-12-31 19:00:00.000000000 -0500
-+++ ghostscript-9.05/mips-arch.h	2012-02-13 13:08:44.000000000 -0500
-@@ -0,0 +1,41 @@
-+/* Parameters derived from machine and compiler architecture. */
-+/* This file is generated mechanically by genarch.c. */
-+
-+   /* ---------------- Scalar alignments ---------------- */
-+
-+#define ARCH_ALIGN_SHORT_MOD 2
-+#define ARCH_ALIGN_INT_MOD 4
-+#define ARCH_ALIGN_LONG_MOD 4
-+#define ARCH_ALIGN_PTR_MOD 4
-+#define ARCH_ALIGN_FLOAT_MOD 4
-+#define ARCH_ALIGN_DOUBLE_MOD 8
-+
-+   /* ---------------- Scalar sizes ---------------- */
-+
-+#define ARCH_LOG2_SIZEOF_CHAR 0
-+#define ARCH_LOG2_SIZEOF_SHORT 1
-+#define ARCH_LOG2_SIZEOF_INT 2
-+#define ARCH_LOG2_SIZEOF_LONG 2
-+#define ARCH_LOG2_SIZEOF_LONG_LONG 3
-+#define ARCH_SIZEOF_GX_COLOR_INDEX 8
-+#define ARCH_SIZEOF_PTR 4
-+#define ARCH_SIZEOF_FLOAT 4
-+#define ARCH_SIZEOF_DOUBLE 8
-+#define ARCH_FLOAT_MANTISSA_BITS 24
-+#define ARCH_DOUBLE_MANTISSA_BITS 53
-+
-+   /* ---------------- Unsigned max values ---------------- */
-+
-+#define ARCH_MAX_UCHAR ((unsigned char)0xff + (unsigned char)0)
-+#define ARCH_MAX_USHORT ((unsigned short)0xffff + (unsigned short)0)
-+#define ARCH_MAX_UINT ((unsigned int)~0 + (unsigned int)0)
-+#define ARCH_MAX_ULONG ((unsigned long)~0L + (unsigned long)0)
-+
-+   /* ---------------- Miscellaneous ---------------- */
-+
-+#define ARCH_IS_BIG_ENDIAN 1
-+#define ARCH_PTRS_ARE_SIGNED 0
-+#define ARCH_FLOATS_ARE_IEEE 1
-+#define ARCH_ARITH_RSHIFT 2
-+#define ARCH_DIV_NEG_POS_TRUNCATES 1
-+
-diff -Naur ghostscript-9.05.orig/mipsel-arch.h ghostscript-9.05/mipsel-arch.h
---- ghostscript-9.05.orig/mipsel-arch.h	1969-12-31 19:00:00.000000000 -0500
-+++ ghostscript-9.05/mipsel-arch.h	2012-02-13 13:08:44.000000000 -0500
+diff -Naru ghostscript-9.52_orig/mipsel-arch.h ghostscript-9.52/mipsel-arch.h
+--- a/mipsel-arch.h
++++ b/mipsel-arch.h
 @@ -0,0 +1,41 @@
 +/* Parameters derived from machine and compiler architecture. */
 +/* This file is generated mechanically by genarch.c. */
@@ -432,9 +489,9 @@ diff -Naur ghostscript-9.05.orig/mipsel-arch.h ghostscript-9.05/mipsel-arch.h
 +#define ARCH_ARITH_RSHIFT 2
 +#define ARCH_DIV_NEG_POS_TRUNCATES 1
 +
-diff -Naur ghostscript-9.05.orig/nios2-arch.h ghostscript-9.05/nios2-arch.h
---- ghostscript-9.05.orig/nios2-arch.h	1969-12-31 19:00:00.000000000 -0500
-+++ ghostscript-9.05/nios2-arch.h	2012-02-13 13:08:44.000000000 -0500
+diff -Naru ghostscript-9.52_orig/nios2-arch.h ghostscript-9.52/nios2-arch.h
+--- a/nios2-arch.h
++++ b/nios2-arch.h
 @@ -0,0 +1,41 @@
 +/* Parameters derived from machine and compiler architecture. */
 +/* This file is generated mechanically by genarch.c. */
@@ -477,9 +534,9 @@ diff -Naur ghostscript-9.05.orig/nios2-arch.h ghostscript-9.05/nios2-arch.h
 +#define ARCH_ARITH_RSHIFT 2
 +#define ARCH_DIV_NEG_POS_TRUNCATES 1
 +
-diff -Naur ghostscript-9.05.orig/powerpc-arch.h ghostscript-9.05/powerpc-arch.h
---- ghostscript-9.05.orig/powerpc-arch.h	1969-12-31 19:00:00.000000000 -0500
-+++ ghostscript-9.05/powerpc-arch.h	2012-02-13 13:08:44.000000000 -0500
+diff -Naru ghostscript-9.52_orig/powerpc-arch.h ghostscript-9.52/powerpc-arch.h
+--- a/powerpc-arch.h
++++ b/powerpc-arch.h
 @@ -0,0 +1,41 @@
 +/* Parameters derived from machine and compiler architecture. */
 +/* This file is generated mechanically by genarch.c. */
@@ -522,9 +579,9 @@ diff -Naur ghostscript-9.05.orig/powerpc-arch.h ghostscript-9.05/powerpc-arch.h
 +#define ARCH_ARITH_RSHIFT 2
 +#define ARCH_DIV_NEG_POS_TRUNCATES 1
 +
-diff -Naur ghostscript-9.05.orig/sh-arch.h ghostscript-9.05/sh-arch.h
---- ghostscript-9.05.orig/sh-arch.h	1969-12-31 19:00:00.000000000 -0500
-+++ ghostscript-9.05/sh-arch.h	2012-02-13 13:08:44.000000000 -0500
+diff -Naru ghostscript-9.52_orig/sh-arch.h ghostscript-9.52/sh-arch.h
+--- a/sh-arch.h
++++ b/sh-arch.h
 @@ -0,0 +1,41 @@
 +/* Parameters derived from machine and compiler architecture. */
 +/* This file is generated mechanically by genarch.c. */
@@ -567,9 +624,9 @@ diff -Naur ghostscript-9.05.orig/sh-arch.h ghostscript-9.05/sh-arch.h
 +#define ARCH_ARITH_RSHIFT 2
 +#define ARCH_DIV_NEG_POS_TRUNCATES 1
 +
-diff -Naur ghostscript-9.05.orig/sparc-arch.h ghostscript-9.05/sparc-arch.h
---- ghostscript-9.05.orig/sparc-arch.h	1969-12-31 19:00:00.000000000 -0500
-+++ ghostscript-9.05/sparc-arch.h	2012-02-13 13:08:44.000000000 -0500
+diff -Naru ghostscript-9.52_orig/sparc-arch.h ghostscript-9.52/sparc-arch.h
+--- a/sparc-arch.h
++++ b/sparc-arch.h
 @@ -0,0 +1,41 @@
 +/* Parameters derived from machine and compiler architecture. */
 +/* This file is generated mechanically by genarch.c. */
@@ -612,9 +669,9 @@ diff -Naur ghostscript-9.05.orig/sparc-arch.h ghostscript-9.05/sparc-arch.h
 +#define ARCH_ARITH_RSHIFT 2
 +#define ARCH_DIV_NEG_POS_TRUNCATES 1
 +
-diff -Naur ghostscript-9.05.orig/x86_64-arch.h ghostscript-9.05/x86_64-arch.h
---- ghostscript-9.05.orig/x86_64-arch.h	1969-12-31 19:00:00.000000000 -0500
-+++ ghostscript-9.05/x86_64-arch.h	2012-02-13 13:08:44.000000000 -0500
+diff -Naru ghostscript-9.52_orig/x86_64-arch.h ghostscript-9.52/x86_64-arch.h
+--- a/x86_64-arch.h
++++ b/x86_64-arch.h
 @@ -0,0 +1,41 @@
 +/* Parameters derived from machine and compiler architecture. */
 +/* This file is generated mechanically by genarch.c. */
@@ -657,9 +714,9 @@ diff -Naur ghostscript-9.05.orig/x86_64-arch.h ghostscript-9.05/x86_64-arch.h
 +#define ARCH_ARITH_RSHIFT 2
 +#define ARCH_DIV_NEG_POS_TRUNCATES 1
 +
-diff -Naur ghostscript-9.05.orig/xtensa-arch.h ghostscript-9.05/xtensa-arch.h
---- ghostscript-9.05.orig/xtensa-arch.h	1969-12-31 19:00:00.000000000 -0500
-+++ ghostscript-9.05/xtensa-arch.h	2012-02-13 13:08:44.000000000 -0500
+diff -Naru ghostscript-9.52_orig/xtensa-arch.h ghostscript-9.52/xtensa-arch.h
+--- a/xtensa-arch.h
++++ b/xtensa-arch.h
 @@ -0,0 +1,41 @@
 +/* Parameters derived from machine and compiler architecture. */
 +/* This file is generated mechanically by genarch.c. */

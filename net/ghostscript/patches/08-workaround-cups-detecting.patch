@@ -1,0 +1,11 @@
+--- a/configure
++++ b/configure
+@@ -10708,7 +10708,7 @@
+   ;;
+ esac
+ fi
+-BUILD_CUPSCONFIG=$ac_cv_path_BUILD_CUPSCONFIG
++BUILD_CUPSCONFIG="$(STAGING_DIR)/usr/bin/cups-config"
+ if test -n "$BUILD_CUPSCONFIG"; then
+   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $BUILD_CUPSCONFIG" >&5
+ printf "%s\n" "$BUILD_CUPSCONFIG" >&6; }

@@ -1,0 +1,22 @@
+diff -Naru ghostscript-10.01.0_orig/configure ghostscript-10.01.0/configure
+--- a/configure
++++ b/configure
+@@ -10537,6 +10537,9 @@
+ JB2_STDINT_TYPES_IN=
+ JBIG2DEC_REQ=0.19
+ 
++# force using local library
++with_jbig2dec=yes
++
+ if test "x$JBIG2_DECODER" = x; then
+ 
+ # Check whether --with-jbig2dec was given.
+@@ -12281,6 +12284,8 @@
+ PDF_MAK="\$(GLSRCDIR)\$(D)stub.mak"
+ PDFROMFS_MAK="\$(GLSRCDIR)\$(D)stub.mak"
+ 
++JPX_DECODER=openjpeg
++
+ if test x"$with_pdf" != x"no" -a x"$enable_auxtools_only" != x"yes" ; then
+ 
+   if test x"$JBIG2_DECODER" = x""; then

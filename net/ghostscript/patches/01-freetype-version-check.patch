@@ -1,0 +1,22 @@
+diff -Naru ghostscript-9.52_orig/configure ghostscript-9.52/configure
+--- a/configure
++++ b/configure
+@@ -7400,12 +7400,18 @@
+                  #if FREETYPE_MAJOR < 2
+                    FAIL
+                  #endif
++                 #if FREETYPE_MAJOR == 2
+                  #if FREETYPE_MINOR < 4
+                    FAIL
+                  #endif
++                 #endif
++                 #if FREETYPE_MAJOR == 2
++                 #if FREETYPE_MINOR == 4
+                  #if FREETYPE_PATCH < 2
+                    FAIL
+                  #endif
++                 #endif
++                 #endif
+                  return(0);
+ 
+   ;
