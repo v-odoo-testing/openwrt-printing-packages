@@ -8,16 +8,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=cups
-PKG_VERSION:=1.6.3
-PKG_RELEASE:=4
+PKG_VERSION:=2.4.7
+PKG_RELEASE:=1
 
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-source.tar.bz2
-PKG_SOURCE_URL:= \
-	http://ftp.rz.tu-bs.de/pub/mirror/ftp.easysw.com/ftp/pub/cups/$(PKG_VERSION) \
-	ftp://ftp.easysw.com/pub/cups/$(PKG_VERSION) \
-	ftp://ftp3.easysw.com/pub/cups/$(PKG_VERSION) \
-	http://www.cups.org/software/$(PKG_VERSION)
-PKG_MD5SUM:=946a2d8ad1aec6beced312fce18543da
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-source.tar.gz
+PKG_SOURCE_URL:=https://github.com/OpenPrinting/cups/releases/download/v$(PKG_VERSION)/
+PKG_MD5SUM:=e0a5ddbf53dfad41da26fc1ef60b2256
 
 TARGET_LDFLAGS+=-Wl,-rpath-link=$(STAGING_DIR)/usr/lib
 
@@ -32,7 +28,7 @@ define Package/cups
 $(call Package/cups/Default)
   SECTION:=net
   CATEGORY:=Network
-  DEPENDS:=+libcups +libcupsmime +libcupscgi +libcupsppdc +libusb-1.0 +libavahi-dbus-support +libavahi-client +libdbus +openslp +avahi-autoipd +avahi-dnsconfd
+  DEPENDS:=+libcups +libcupsmime +libcupscgi +libcupsppdc +libcupsimage +libusb-1.0 +libstdcpp
   TITLE:=Common UNIX Printing System (daemon)
 endef
 
@@ -90,7 +86,7 @@ define Package/cups-ppdc
 $(call Package/cups/Default)
   SECTION:=net
   CATEGORY:=Network
-  DEPENDS:=+libcupsppdc
+  DEPENDS:=+libcupsppdc +libcups +libjpeg +libpng +libstdcpp +libz
   TITLE:=Common UNIX Printing System - PPDC utils
 endef
 
@@ -102,7 +98,7 @@ define Package/libcups
 $(call Package/cups/Default)
   SECTION:=libs
   CATEGORY:=Libraries
-  DEPENDS:=+zlib +libpthread +libpng +libjpeg +libavahi-client +libavahi
+  DEPENDS:=+zlib +libpthread +libpng +libjpeg +libopenssl
   TITLE:=Common UNIX Printing System - Core library
 endef
 
@@ -391,8 +387,9 @@ define Build/Configure
 		--enable-shared \
 		--enable-image \
 		--enable-libusb \
-		--enable-dbus \
-		--enable-avahi \
+		--disable-acl \
+		--disable-dbus \
+		--disable-avahi \
 		--disable-launchd \
 		--disable-ldap \
 		--disable-pam \
@@ -415,6 +412,8 @@ define Build/Compile
 		DSTROOT="$(PKG_INSTALL_DIR)" \
 		STRIP="/bin/true" \
 		all install
+	$(INSTALL_DIR) $(PKG_INSTALL_DIR)/usr/bin
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/cups-config $(PKG_INSTALL_DIR)/usr/bin
 	# Comment out any mime.convs using CUPS' own filters. These
 	# are deprecated by OpenPrinting's cups-filters package. Perl
 	# command taken from cups-filters-1.0.X/INSTALL
@@ -439,7 +438,7 @@ define Package/cups/install
 	$(CP) $(PKG_INSTALL_DIR)/usr/lib/cups/driver $(1)/usr/lib/cups
 	$(CP) $(PKG_INSTALL_DIR)/usr/lib/cups/monitor $(1)/usr/lib/cups
 	$(INSTALL_DIR) $(1)/usr/lib/cups/filter
-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/cups/filter/{commandtops,pstops} \
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib/cups/filter/{commandtops,pstops,rastertopwg} \
 		$(PKG_INSTALL_DIR)/usr/lib/cups/filter/gziptoany \
 		$(1)/usr/lib/cups/filter
 	$(INSTALL_DIR) $(1)/usr/share/cups
@@ -483,12 +482,12 @@ endef
 define Package/cups-client/install
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(INSTALL_BIN) \
-		$(PKG_INSTALL_DIR)/usr/bin/{lp,cancel,cupstestppd,cupstestdsc} \
-		$(PKG_INSTALL_DIR)/usr/bin/{ipptool,lpoptions,lpstat,lppasswd} \
+		$(PKG_INSTALL_DIR)/usr/bin/{lp,cancel,cupstestppd} \
+		$(PKG_INSTALL_DIR)/usr/bin/{ipptool,lpoptions,lpstat} \
 		$(1)/usr/bin/
 	$(INSTALL_DIR) $(1)/usr/sbin
 	$(INSTALL_BIN) \
-		$(PKG_INSTALL_DIR)/usr/sbin/{cupsaccept,cupsaddsmb,cupsfilter} \
+		$(PKG_INSTALL_DIR)/usr/sbin/{cupsaccept,cupsfilter} \
 		$(PKG_INSTALL_DIR)/usr/sbin/{lpadmin,lpinfo,lpmove} \
 		$(1)/usr/sbin/
 	(cd $(1)/usr/sbin; ln -sf cupsaccept accept; ln -sf cupsaccept cupsenable; ln -sf cupsaccept cupsdisable; ln -sf cupsaccept reject; ln -sf cupsaccept cupsreject;)
@@ -510,27 +509,27 @@ endef
 
 define Package/libcups/install
 	$(INSTALL_DIR) $(1)/usr/lib
-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libcups.so* $(1)/usr/lib/
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib*/libcups.so* $(1)/usr/lib/
 endef
 
 define Package/libcupscgi/install
 	$(INSTALL_DIR) $(1)/usr/lib
-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libcupscgi.so* $(1)/usr/lib/
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib*/libcupscgi.so* $(1)/usr/lib/
 endef
 
 define Package/libcupsimage/install
 	$(INSTALL_DIR) $(1)/usr/lib
-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libcupsimage.so* $(1)/usr/lib/
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib*/libcupsimage.so* $(1)/usr/lib/
 endef
 
 define Package/libcupsmime/install
 	$(INSTALL_DIR) $(1)/usr/lib
-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libcupsmime.so* $(1)/usr/lib/
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib*/libcupsmime.so* $(1)/usr/lib/
 endef
 
 define Package/libcupsppdc/install
 	$(INSTALL_DIR) $(1)/usr/lib
-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libcupsppdc.so* $(1)/usr/lib/
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib*/libcupsppdc.so* $(1)/usr/lib/
 endef
 
 # define Package/cups-locale-de/install
@@ -664,20 +663,22 @@ endef
 # endef
 
 define Build/InstallDev
-	$(INSTALL_DIR) $(2)/bin
-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/cups-config $(2)/bin/
-	$(INSTALL_DIR) $(1)/usr/include
+	$(INSTALL_DIR) $(2)/bin $(1)/usr/bin $(1)/usr/include $(1)/usr/lib $(1)/usr/lib/pkgconfig
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/cups-config $(1)/usr/bin/
 	$(CP) $(PKG_INSTALL_DIR)/usr/include/cups $(1)/usr/include/
-	$(INSTALL_DIR) $(1)/usr/lib
-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libcups*.so* $(1)/usr/lib/
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib*/libcups*.so* $(1)/usr/lib/
+	$(CP) $(PKG_BUILD_DIR)/cups.pc $(1)/usr/lib/pkgconfig/
+	$(SED) 's,^\(prefix\|exec_prefix\)=.*,\1=$(STAGING_DIR)/usr,g' $(1)/usr/bin/cups-config
+	[ -n "$(TARGET_LDFLAGS)" ] && $(SED) 's#$(TARGET_LDFLAGS)##g' $(1)/usr/lib/pkgconfig/cups.pc || true
+	$(LN) $(STAGING_DIR)/usr/bin/cups-config $(2)/bin/
 endef
 
 $(eval $(call BuildPackage,cups))
 $(eval $(call BuildPackage,libcups))
-$(eval $(call BuildPackage,libcupscgi))
+# $(eval $(call BuildPackage,libcupscgi))
 $(eval $(call BuildPackage,libcupsimage))
-$(eval $(call BuildPackage,libcupsmime))
-$(eval $(call BuildPackage,libcupsppdc))
+# $(eval $(call BuildPackage,libcupsmime))
+# $(eval $(call BuildPackage,libcupsppdc))
 $(eval $(call BuildPackage,cups-bsd))
 $(eval $(call BuildPackage,cups-client))
 #$(eval $(call BuildPackage,cups-filters))
