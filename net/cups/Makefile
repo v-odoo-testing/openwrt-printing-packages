@@ -98,8 +98,25 @@ define Package/libcups
 $(call Package/cups/Default)
   SECTION:=libs
   CATEGORY:=Libraries
-  DEPENDS:=+zlib +libpthread +libpng +libjpeg +libopenssl
+  DEPENDS:=+zlib +libpthread +libpng +libjpeg +LIBCUPS_GNUTLS:libgnutls +LIBCUPS_OPENSSL:libopenssl
   TITLE:=Common UNIX Printing System - Core library
+endef
+
+define Package/libcups/config
+	if PACKAGE_libcups
+		config LIBCUPS_GNUTLS
+			bool "Compile with GnuTLS support"
+			default y
+			help
+				Use GnuTLS for SSL
+	endif
+	if PACKAGE_libcups
+		config LIBCUPS_OPENSSL
+			bool "Compile with OpenSSL support"
+			default n
+			help
+				Use OpenSSL for SSL
+	endif
 endef
 
 define Package/libcups/description
@@ -379,28 +396,15 @@ define Build/Configure
 		--with-cups-user="nobody" \
 		--with-cups-group="nogroup" \
 		--with-system-groups="root" \
-		--with-local_protocols='dnssd' \
 		--enable-default-shared \
-		--without-perl \
-		--without-python \
-		--without-php \
 		--enable-shared \
-		--enable-image \
 		--enable-libusb \
 		--disable-acl \
 		--disable-dbus \
-		--disable-avahi \
-		--disable-launchd \
-		--disable-ldap \
+		--with-dnssd=no \
 		--disable-pam \
-		--enable-slp \
-		--disable-gnutls \
-		--disable-openssl \
-		--disable-cdsassl \
-		--disable-ssl \
+		--with-tls=$(if $(LIBCUPS_OPENSSL),gnutls,openssl) \
 		--disable-gssapi \
-		--disable-tiff \
-		--with-pdftops=/usr/bin/gs, \
 		UNAME="Linux" \
 		LIBS="$(TARGET_LDFLAGS) -lz -lpng -ljpeg" \
 	)
