@@ -6,11 +6,11 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=ubuntu-font-family
-PKG_VERSION:=0.80
+PKG_VERSION:=0.83
 PKG_RELEASE:=1
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).zip
-PKG_SOURCE_URL:=http://font.ubuntu.com/download/
-PKG_MD5SUM:=a1fc70f5a5b1d096ab8310886cddaa1c
+PKG_SOURCE:=0cef8205-$(PKG_NAME)-$(PKG_VERSION).zip
+PKG_SOURCE_URL:=https://assets.ubuntu.com/v1/
+PKG_MD5SUM:=c5a5059d6856b4ddf79d824dcaf5ad32
 
 include $(INCLUDE_DIR)/package.mk
 
