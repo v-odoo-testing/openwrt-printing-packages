@@ -6,6 +6,9 @@
 make dirclean
 #---------------------------------------------------------------
 
+cp feeds.conf.default feeds.conf
+echo "src-git printing git://github.com/Vladdrako/openwrt-printing-packages.git" >> feeds.conf
+
 # Remove downloaded/generated files.
 ./scripts/feeds clean
 
@@ -16,7 +19,7 @@ make dirclean
 ./scripts/feeds uninstall -a
 
 # Mark all packages from 'printing' to be installed as 'm'
-./scripts/feeds install bzip2
+./scripts/feeds install bzip2 libcurl
 ./scripts/feeds install -a -p printing -d m
 
 make defconfig
