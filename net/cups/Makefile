@@ -98,7 +98,7 @@ define Package/libcups
 $(call Package/cups/Default)
   SECTION:=libs
   CATEGORY:=Libraries
-  DEPENDS:=+zlib +libpthread +libpng +libjpeg +LIBCUPS_GNUTLS:libgnutls +LIBCUPS_OPENSSL:libopenssl
+  DEPENDS:=+zlib +libpthread +libpng +libjpeg +LIBCUPS_GNUTLS:libgnutls +LIBCUPS_OPENSSL:libopenssl +libdbus +libavahi-client
   TITLE:=Common UNIX Printing System - Core library
 endef
 
@@ -400,7 +400,8 @@ define Build/Configure
 		--enable-shared \
 		--enable-libusb \
 		--disable-acl \
-		--disable-dbus \
+		--enable-dbus \
+		--enable-avahi \
 		--with-dnssd=no \
 		--disable-pam \
 		--with-tls=$(if $(LIBCUPS_OPENSSL),gnutls,openssl) \
