@@ -25,7 +25,7 @@ define Package/poppler
   SECTION:=utils
   CATEGORY:=Utilities
   TITLE:=Poppler PDF rendering library
-  DEPENDS:=+libpng +libtiff +libjpeg +zlib +lcms2 +fontconfig +libpthread +libfreetype +libstdcpp +libcairo +glib2 +libintl-full +curl +libnss +nspr
+  DEPENDS:=+libpng +libtiff +libjpeg +zlib +lcms2 +fontconfig +libpthread +libfreetype +libstdcpp +libcairo +glib2 +libintl-full +curl +libnss +nspr +boost
   URL:=http://poppler.freedesktop.org/
   SUBMENU:=Printing
 endef

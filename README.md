@@ -62,3 +62,30 @@ different PDF backend, in this case Poppler. For instructions of how
 to do this open the tar-ball of the `cups-filters-*.tar.bz2` and check
 the section *1. Selection of the renderer: Ghostscript, Poppler, or
 Adobe Reader* of the `README`.
+
+### pay attention
+
+add `libcurl` before adding the printing, to enable the libcurl options
+```bash
+./scripts/feeds install bzip2 libcurl
+```
+
+trouble perl
+
+# build error perl
+```bash
+apt-get -y install protobuf-c-compiler
+```
+
+and : menuconfig: disable perl testing
+```config
+#
+# Configuration
+#
+CONFIG_PERL_THREADS=y
+CONFIG_PERL_TESTS=n
+CONFIG_PERL_NOCOMMENT=y
+# end of Configuration
+```
+
+trouble ghostscript: unselect auto remove build dir=> ghostscript has symlinks to the hostpakage which is deleted on autoremove
